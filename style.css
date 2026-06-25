@@ -2,15 +2,28 @@ body, svg, text, span, h1, h2, h3, p {
     font-family: 'Open Sans', sans-serif;
 }
 
+.banner {
+    width:110%;
+    margin:-5%;
+}
+
+#intro {
+    margin-top: 5%;
+}
+
+.paragraph {
+    padding: 10% 25% 10% 25%;
+}
+
 /* ---- Layout: side-by-side, sticky graphic ---- */
-#scroll {
+#overview {
     position: relative;
     display: flex;
     max-width: 1100px;
     margin: 0 auto;
 }
 
-.scroll__graphic {
+.overview__graphic {
     position: sticky;
     top: 0;
     height: 100vh;
@@ -20,7 +33,7 @@ body, svg, text, span, h1, h2, h3, p {
     justify-content: center;
 }
 
-.scroll__text {
+.overview__text {
     flex: 1;
     padding: 0 2rem;
     max-width: 30rem;
@@ -42,15 +55,19 @@ body, svg, text, span, h1, h2, h3, p {
 
 /* ---- Mobile: stack instead of side-by-side ---- */
 @media (max-width: 768px) {
-    #scroll {
+    .paragraph {
+        padding: 10% 1% 10% 1%;
+    }
+
+    #overview {
         display: block;
     }
 
-    .scroll__graphic {
+    .overview__graphic {
         height: 100vh;
     }
 
-    .scroll__text {
+    .overview__text {
         max-width: none;
         padding: 0 1rem;
     }

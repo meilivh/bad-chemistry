@@ -1,8 +1,8 @@
 // using d3 for convenience, and storing selected elements
-var container = d3.select('#scroll');
-var graphic = container.select('.scroll__graphic');
+var container = d3.select('#overview');
+var graphic = container.select('.overview__graphic');
 var chart = graphic.select('.chart');
-var text = container.select('.scroll__text');
+var text = container.select('.overview__text');
 var step = text.selectAll('.step');
 
 // initialize the scrollama
@@ -291,7 +291,7 @@ function init() {
 
     scroller
         .setup({
-            step: '.scroll__text .step',
+            step: '.overview__text .step',
             offset: 0.5,
             debug: false,
         })
