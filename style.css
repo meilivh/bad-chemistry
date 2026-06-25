@@ -1,0 +1,108 @@
+body, svg, text, span, h1, h2, h3, p {
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* ---- Layout: side-by-side, sticky graphic ---- */
+#scroll {
+    position: relative;
+    display: flex;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.scroll__graphic {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scroll__text {
+    flex: 1;
+    padding: 0 2rem;
+    max-width: 30rem;
+}
+
+.step {
+    opacity: 0.2;
+    padding: 1rem 0;
+    min-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: opacity 0.3s;
+}
+
+.step.is-active {
+    opacity: 1;
+}
+
+/* ---- Mobile: stack instead of side-by-side ---- */
+@media (max-width: 768px) {
+    #scroll {
+        display: block;
+    }
+
+    .scroll__graphic {
+        height: 100vh;
+    }
+
+    .scroll__text {
+        max-width: none;
+        padding: 0 1rem;
+    }
+}
+
+/* ---- Chart styles ---- */
+.sector-label {
+    text-anchor: middle;
+    font-size: 9px;
+}
+
+.fa-line {
+    stroke: #D10787;
+    stroke-width: 3;
+    fill: none;
+}
+
+.free-allowances {
+    fill: #D10787;
+    opacity: 0.5;
+}
+
+.emissions {
+    fill: #D10787;
+    opacity: 0.2;
+}
+
+.emissions-mark {
+    fill: #293C8C;
+    stroke: #293C8C;
+    stroke-width: 4;
+}
+
+.total-emissions-label {
+    text-anchor: middle;
+    font-weight: bold;
+    fill: white;
+    font-size: 25px;
+}
+
+.total-fa-label {
+    text-anchor: middle;
+    font-weight: bold;
+    fill: #D10787;
+    font-size: 25px;
+}
+
+.emissions-label {
+    font-size: 10px;
+}
+
+.fa-fill {
+    stroke-width: 0.5;
+    stroke: #D10787;
+}
