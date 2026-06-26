@@ -23,6 +23,15 @@ a {
     padding: 5% 25% 5% 25%;
 }
 
+div.img-chart {
+    width: 100%;
+    padding: 0% 25%;
+}
+
+div.img-chart img {
+    object-fit: contain;
+    width: 50%;
+}
 
 /* ---- Steps: shared by both sections ---- */
 .step {
@@ -53,34 +62,39 @@ p.scrolly-overlay {
     width: 100%;
 }
 
+.chart-caption {
+    color: white;
+    font-size: 10px;
+}
+
 /* ============================================================
    #headline and #scroll — side-by-side on desktop, stacked on
    mobile. Both sections share the same layout pattern, so one
    ruleset covers both. (app.js sizes each section's SVG itself
    based on this same 768px breakpoint via fullWidth/2 vs fullWidth)
    ============================================================ */
-#headline, #scroll, #map {
+#headline, #scroll, #map, #waffle {
     position: relative;
     display: flex;
     margin: 0 auto;
     background-color: black;
 }
 
-#headline, #scroll, #map > p, text {
+#headline, #scroll, #map, #waffle > p, text {
     color: white;
 }
 
-.headline__graphic, .scroll__graphic, .map__graphic {
+.headline__graphic, .scroll__graphic, .map__graphic, .waffle__graphic {
     position: sticky;
     top: 0;
     height: 100vh;
     flex: 1;
-    display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0.5% 1%;
 }
 
-.headline__text, .scroll__text, .map__text {
+.headline__text, .scroll__text, .map__text, .waffle__text {
     flex: 1;
     max-width: none;
     padding: 0 5rem;
@@ -116,18 +130,42 @@ li::marker {
         padding: 10% 1% 10% 1%;
     }
 
-    #headline, #scroll, #map {
+    #headline, #scroll, #map, #waffle {
         display: block;
     }
 
-    .headline__graphic, .scroll__graphic, .map__graphic {
+    .headline__graphic, .scroll__graphic, .map__graphic, .waffle__graphic {
         height: 100vh;
     }
 
-    .headline__text, .scroll__text, .map__text {
+    .headline__text, .scroll__text, .map__text, .waffle__text {
         max-width: none;
         padding: 0 1rem;
     }
+}
+
+/* ---- Waffle chart (company concentration dot-grid + bar) ----
+   No CSS fill-transition here, for the same reason as the
+   headline towers: d3's own transition().attr('fill', ...)
+   already animates this. ---- */
+
+.waffle-tip {
+    position: fixed;
+    background: #141412;
+    color: #f4f1ea;
+    padding: 9px 13px;
+    font-size: 11.5px;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 9999;
+    border-left: 2px solid #293C8C;
+    line-height: 1.65;
+    transition: opacity 0.1s;
+    max-width: 220px;
+}
+
+.waffle-tip.show {
+    opacity: 1;
 }
 
 /* ---- Map chart (choropleth -> zoomed city bubbles) ---- */
