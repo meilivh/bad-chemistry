@@ -1,5 +1,13 @@
-body, svg, text, span, h1, h2, h3, p {
+body, svg, text, span, h1, h2, p {
     font-family: 'Open Sans', sans-serif;
+}
+
+h3 {
+    font-family: "Oswald", sans-serif;
+}
+
+a {
+    color: #FCC480;
 }
 
 .banner {
@@ -75,8 +83,32 @@ p.scrolly-overlay {
 .headline__text, .scroll__text {
     flex: 1;
     max-width: none;
-    padding: 0 1rem;
+    padding: 0 5rem;
     color: white;
+}
+
+.chart-title {
+    font-family: "Oswald", sans-serif;
+    font-size: 1.17em;
+    font-weight: bold;
+    margin-left:20px;
+    color: white;
+}
+
+.highlight {
+    font-weight: bold;
+    color: #FCC480;
+}
+
+li::marker {
+    color:white;
+}
+
+.number {
+    font-family: "Oswald", sans-serif;
+    font-size: 32px;
+    color: #FCC480;
+    font-weight: bold;
 }
 
 @media (max-width: 768px) {
