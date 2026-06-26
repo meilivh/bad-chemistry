@@ -46,52 +46,18 @@ p.scrolly-overlay {
 }
 
 /* ============================================================
-   #headline — always an overlay, regardless of device width.
-   CSS grid with both children in the same cell: the row's height
-   is set by the taller child (.headline__text, ~3 steps tall),
-   and the graphic stays pinned via sticky + align-self: start
-   while you scroll through that row, with text floating on top.
-   ============================================================ */
-#headline {
-    position: relative;
-    display: grid;
-    padding: 0 5%; /* full width, with margins */
-}
-
-.headline__graphic {
-    grid-column: 1;
-    grid-row: 1;
-    position: sticky;
-    top: 0;
-    align-self: start;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 0;
-}
-
-.headline__text {
-    grid-column: 1;
-    grid-row: 1;
-    position: relative;
-    z-index: 1;
-    max-width: none;
-    padding: 0;
-}
-
-/* ============================================================
-   #scroll — side-by-side on desktop, stacked on mobile.
-   (app.js's drawChemicalsChart already sizes the SVG itself
+   #headline and #scroll — side-by-side on desktop, stacked on
+   mobile. Both sections share the same layout pattern, so one
+   ruleset covers both. (app.js sizes each section's SVG itself
    based on this same 768px breakpoint via fullWidth/2 vs fullWidth)
    ============================================================ */
-#scroll {
+#headline, #scroll {
     position: relative;
     display: flex;
     margin: 0 auto;
 }
 
-.scroll__graphic {
+.headline__graphic, .scroll__graphic {
     position: sticky;
     top: 0;
     height: 100vh;
@@ -101,7 +67,7 @@ p.scrolly-overlay {
     justify-content: center;
 }
 
-.scroll__text {
+.headline__text, .scroll__text {
     flex: 1;
     max-width: none;
     padding: 0 1rem;
@@ -112,54 +78,25 @@ p.scrolly-overlay {
         padding: 10% 1% 10% 1%;
     }
 
-    #scroll {
+    #headline, #scroll {
         display: block;
     }
 
-    .scroll__graphic {
+    .headline__graphic, .scroll__graphic {
         height: 100vh;
     }
 
-    .scroll__text {
+    .headline__text, .scroll__text {
         max-width: none;
         padding: 0 1rem;
     }
 }
 
-/* ---- Headline chart (two-bar comparison) ---- */
-.headline-bar-emitted {
-    fill: #FCC480;
-}
-
-.headline-bar-fa {
-    fill: #293C8C;
-}
-
-.headline-bar-label-value {
-    fill: white;
-    font-weight: bold;
-    font-size: 32px;
-    text-anchor: middle;
-}
-
-.headline-bar-label-sub {
-    fill: white;
-    font-size: 14px;
-    text-anchor: middle;
-}
-
-.headline-bracket {
-    stroke: #D10787;
-    stroke-width: 2;
-    fill: none;
-}
-
-.headline-bracket-label {
-    fill: #D10787;
-    font-weight: bold;
-    font-size: 14px;
-    text-anchor: middle;
-}
+/* ---- Headline chart (Eiffel Tower waffle grid) ----
+   No CSS transition here: d3's own .transition().attr('fill', ...)
+   already animates the color change smoothly. Adding a CSS
+   transition on top would have it re-animating between every
+   intermediate value d3 produces, fighting the JS animation. ---- */
 
 /* ---- Main chemicals chart ---- */
 .sector-label {

@@ -48,13 +48,15 @@ function initScrolly(config) {
 }
 
 /* ============================================================
-   HEADLINE SECTION — simple two-bar comparison
-   1.28 GtCO2e emitted vs 1.26 GtCO2e covered by free allowances
+   HEADLINE SECTION — 32-icon waffle grid (Eiffel Tower)
+   Step 1: all 32 towers appear (the "32 towers a day" framing)
+   Step 2: 31 of them turn blue (98% covered by free allowances)
+   Step 3: the last one turns pink (2% actually paid)
    ============================================================ */
 function drawHeadlineChart(fullWidth, chart) {
-    const margin = {top: 10, right: 10, bottom: 10, left: 10},
-        width = fullWidth - margin.left - margin.right,
-        height = 300 - margin.top - margin.bottom;
+    const margin = {top: 10, right: fullWidth*0.05, bottom: 10, left: fullWidth*0.05},
+        width = (fullWidth > 768 ? fullWidth / 2 : fullWidth) - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
 
     const svg = chart.append("svg")
         .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
@@ -63,120 +65,63 @@ function drawHeadlineChart(fullWidth, chart) {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const totalEmitted = 1.28;
-    const coveredByFA = 1.26;
-    const paidFraction = (totalEmitted - coveredByFA) / totalEmitted; // ~2%
-    const widthFA = width*(coveredByFA/totalEmitted);
+    // define the icon once; every tower below is a lightweight <use> reference to it
+    svg.append("defs")
+        .append("symbol")
+        .attr("id", "eiffel-icon")
+        .attr("viewBox", "0 0 130 165")
+        .append("path")
+        .attr("fill-rule", "evenodd")
+        .attr("clip-rule", "evenodd")
+        .attr("d", "M95.032 147.348C91.89 121.945 60.041 120.341 55.885 147.082L35.032 146.94C39.45 139.945 44.94 132.589 50.276 123.411L49.309 114.346L101.411 114.923L99.682 123.51C105.11 133.635 110.709 141.206 114.969 147.484L95.032 147.348ZM81.541 109.8L78.784 96.67L72.619 96.648L69.419 109.956L57.124 110.113C58.977 105.981 60.733 101.507 62.329 96.611L61.663 96.609L59.666 87.785L91.045 88.352L89.799 96.71L88.638 96.706C90.039 101.366 91.572 105.666 93.185 109.652L81.541 109.8ZM70.555 43.551L80.91 44.137C81.269 59.238 82.87 72.203 85.248 83.421L66.085 82.815C68.551 71.754 70.198 58.854 70.555 43.551ZM68.896 39.629L67.219 31.854L71.828 31.765L72.597 20.854H78.006L79.298 31.62L84.127 31.526L82.217 39.8L68.896 39.629Z");
 
-    // shared scale: both bars' heights are proportional to their value
-    const yScale = d3.scaleLinear().domain([0, totalEmitted]).range([0, height]);
+    const TOTAL = 32;
+    const cols = 8;
+    const rows = Math.ceil(TOTAL / cols);
+    const gap = 6;
+    const iconW = (width - (cols - 1) * gap) / cols;
+    const iconH = iconW * (165 / 130); // matches the symbol's viewBox aspect ratio
+    const gridHeight = rows * iconH + (rows - 1) * gap;
+    const offsetY = (height - gridHeight) / 2; // vertically center the grid in the available height
 
-    // bar 1: total emitted (orange) — sits on top
-    const barEmitted = svg.append('rect')
-        .attr('class', 'headline-bar-emitted')
-        .attr('x', 0)
-        .attr('y', 0)
-        .attr('width', width)
-        .attr('height', 100)
-
-    const labelEmittedValue = svg.append('text')
-        .attr('class', 'headline-bar-label-value')
-        .attr('x', width / 2)
-        .attr('y', 50)
-        .text('1.28 GtCO₂e')
+    const towers = svg.selectAll('.eiffel-tower')
+        .data(d3.range(TOTAL)) // datum doubles as each tower's index, 0-31
+        .join('use')
+        .attr('class', 'eiffel-tower')
+        .attr('href', '#eiffel-icon')
+        .attr('x', d => (d % cols) * (iconW + gap))
+        .attr('y', d => offsetY + Math.floor(d / cols) * (iconH + gap))
+        .attr('width', iconW)
+        .attr('height', iconH)
+        .attr('fill', '#FCC480')
         .style('opacity', 0);
 
-    const labelEmittedSub = svg.append('text')
-        .attr('class', 'headline-bar-label-sub')
-        .attr('x', width / 2)
-        .attr('y', 50 + 22)
-        .text('emitted since 2013')
-        .style('opacity', 0);
-
-    // bar 2: covered by free allowances (blue) — sits directly below bar 1
-    const barFA = svg.append('rect')
-        .attr('class', 'headline-bar-fa')
-        .attr('x', 0)
-        .attr('y', 100 + 10)
-        .attr('width', 0)
-        .attr('height', 100)
-
-    const labelFAValue = svg.append('text')
-        .attr('class', 'headline-bar-label-value')
-        .attr('x', width / 2)
-        .attr('y', 100 + 10 + 50)
-        .text('1.26 GtCO₂e')
-
-    const labelFASub1 = svg.append('text')
-        .attr('class', 'headline-bar-label-sub')
-        .attr('x', width / 2)
-        .attr('y', 100 + 10 + 50 + 22)
-        .text('covered by free allowances')
-
-    const labelFASub2 = svg.append('text')
-        .attr('class', 'headline-bar-label-sub')
-        .attr('x', width / 2)
-        .attr('y', 100 + 10 + 50 + 40)
-        .text('(equivalent to €36 bn)')
-
-    // bar 1: total emitted (orange) — sits on top
-    const bracket = svg.append('rect')
-        .attr('class', 'headline-bracket')
-        .attr('x', widthFA)
-        .attr('y', 100 + 11)
-        .attr('width', width*(1-(coveredByFA/totalEmitted)))
-        .attr('height', 120)
-        // .style('opacity', 0);
-
-    const bracketLabel = svg.append('text')
-        .attr('class', 'headline-bracket-label')
-        .attr('x', widthFA)
-        .attr('y', 100 + 11 + 120 + 20)
-        .text('only ' + Math.round(paidFraction * 100) + '%')
-        // .style('opacity', 0);
-
-    const bracketLabel2 = svg.append('text')
-        .attr('class', 'headline-bracket-label')
-        .attr('x', widthFA)
-        .attr('y', 100 + 11 + 120 + 20 + 16)
-        .text('were paid')
-        // .style('opacity', 0);
-
-    return {
-        barEmitted, labelEmittedValue, labelEmittedSub,
-        barFA, widthFA,
-        bracket, bracketLabel, bracketLabel2
-    };
+    return { towers, total: TOTAL };
 }
 
 function onHeadlineStep(api, stepNum) {
     if (stepNum == 1) {
-        api.barEmitted.transition().duration(800).style('opacity', 1);
-        api.labelEmittedValue.transition().duration(800).style('opacity', 1);
-        api.labelEmittedSub.transition().duration(800).style('opacity', 1);
-        api.barFA.transition().duration(800).attr('width',0);
+        api.towers.transition().duration(800).style('opacity', 1).attr('fill', '#FCC480');
     }
 
     if (stepNum == 2) {
-        api.barFA.transition().duration(2000).attr('width',api.widthFA);
-        api.bracket.transition().duration(800).style('opacity', 0);
-        api.bracketLabel.transition().duration(800).style('opacity', 0);
-        api.bracketLabel2.transition().duration(800).style('opacity', 0);        
+        api.towers.filter(d => d < api.total - 1)
+            .transition().duration(800)
+            .attr('fill', '#293C8C');
     }
 
     if (stepNum == 3) {
-        api.bracket.transition().duration(800).style('opacity', 1);
-        api.bracketLabel.transition().duration(800).style('opacity', 1);
-        api.bracketLabel2.transition().duration(800).style('opacity', 1);        
+        api.towers.filter(d => d === api.total - 1)
+            .transition().duration(800)
+            .attr('fill', '#D10787');
     }
-        
 }
 
 /* ============================================================
    MAIN CHEMICALS SECTION — historical trend chart
    ============================================================ */
 function drawChemicalsChart(fullWidth, chart) {
-    const margin = {top: 10, right: 30, bottom: 30, left: 50},
+    const margin = {top: 10, right: fullWidth*0.05, bottom: 30, left: fullWidth*0.05},
         width = (fullWidth>768?fullWidth/2:fullWidth) - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom;
 
