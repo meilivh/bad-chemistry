@@ -289,6 +289,7 @@ function drawChemicalsChart(fullWidth, chart) {
         .attr('dy', 20)
         .style('text-anchor', 'end')
         .text('4% ↑')
+        .style('fill','black')
         .style('opacity', 0);
 
     svg.append('text')
@@ -298,6 +299,7 @@ function drawChemicalsChart(fullWidth, chart) {
         .attr('dx', -2)
         .attr('dy', 28)
         .style('text-anchor', 'end')
+        .style('color','black')
         .text('increase')
         .style('opacity', 0);
 
