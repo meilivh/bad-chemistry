@@ -12,7 +12,7 @@ body, svg, text, span, h1, h2, h3, p {
 }
 
 .paragraph {
-    padding: 10% 25% 10% 25%;
+    padding: 5% 25% 5% 25%;
 }
 
 
@@ -55,6 +55,11 @@ p.scrolly-overlay {
     position: relative;
     display: flex;
     margin: 0 auto;
+    background-color: black;
+}
+
+#headline, #scroll > p, text {
+    color: white;
 }
 
 .headline__graphic, .scroll__graphic {
@@ -71,6 +76,7 @@ p.scrolly-overlay {
     flex: 1;
     max-width: none;
     padding: 0 1rem;
+    color: white;
 }
 
 @media (max-width: 768px) {

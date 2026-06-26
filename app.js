@@ -107,13 +107,13 @@ function onHeadlineStep(api, stepNum) {
     if (stepNum == 2) {
         api.towers.filter(d => d < api.total - 1)
             .transition().duration(800)
-            .attr('fill', '#293C8C');
+            .attr('fill', '#D10787');
     }
 
     if (stepNum == 3) {
         api.towers.filter(d => d === api.total - 1)
             .transition().duration(800)
-            .attr('fill', '#D10787');
+            .attr('fill', '#54F9DB');
     }
 }
 
