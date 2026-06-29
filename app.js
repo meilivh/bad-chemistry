@@ -54,9 +54,9 @@ function initScrolly(config) {
    Step 3: the last one turns pink (2% actually paid)
    ============================================================ */
 function drawHeadlineChart(fullWidth, chart) {
-    const margin = {top: 50, right: fullWidth*0.05, bottom: 10, left: fullWidth*0.05},
+    const margin = {top: 50, right: fullWidth*0.05, bottom: 0, left: fullWidth*0.05},
         width = (fullWidth > 768 ? fullWidth / 2 : fullWidth) - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom;
+        height = 450 - margin.top - margin.bottom;
 
     const svg = chart.append("svg")
         .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
