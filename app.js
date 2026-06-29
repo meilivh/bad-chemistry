@@ -408,7 +408,7 @@ function drawMapChart(fullWidth, chart) {
     svg.append('rect').attr('width', W).attr('height', H).attr('fill', 'black');
 
     const legend = chart.append('div').attr('class', 'map-legend');
-    chart.append('div').attr('class', 'map-source-note').text('Source: EU ETS verified emissions registry, 2024');
+    chart.append('div').attr('class', 'map-source-note').text('Hover for details');
     const tip = d3.select('body').append('div').attr('class', 'map-tip');
 
     const COUNTRY_DATA={NL:{emit:67.042566,fa:58.274091},DE:{emit:61.466473,fa:63.346983},FR:{emit:46.121302,fa:42.519758},BE:{emit:36.036433,fa:36.60445},ES:{emit:29.406783,fa:25.718685},PL:{emit:22.049517,fa:26.231765},IT:{emit:20.964698,fa:21.648592},CZ:{emit:16.237375,fa:7.408368},HU:{emit:9.25879,fa:9.072569},BG:{emit:9.08892,fa:6.970447},NO:{emit:6.997748,fa:8.063822},LT:{emit:6.621213,fa:6.640534},SK:{emit:5.735334,fa:5.378533},AT:{emit:5.683666,fa:7.069392},SE:{emit:4.353249,fa:4.249356},FI:{emit:3.232636,fa:3.927976},RO:{emit:2.802308,fa:4.489573},PT:{emit:2.667551,fa:3.218137},HR:{emit:1.620223,fa:2.246387},GR:{emit:1.051978,fa:1.143141},DK:{emit:.563135,fa:.228686},IE:{emit:.20298,fa:.09462},SI:{emit:.124636,fa:.18672},EE:{emit:0,fa:0}};
@@ -549,7 +549,7 @@ function drawMapChart(fullWidth, chart) {
                 .attr('width',200)
                 .attr('height',40)
                 .attr('rx',5)
-                .attr('fill', '#ddd')
+                .attr('fill', '#7d7d7d')
                 .style('opacity',0.8)
                 .attr('stroke', '#293C8C')
                 .attr('stroke-width', 0.8)
@@ -822,7 +822,7 @@ function drawWaffleChart(fullWidth, chart) {
 
 // chart visual state 0 = top50/BASF, 1 = top35/80%, 2 = remaining206/20%, 3 = overallocation
 // mapped to this section's narrative order: overallocation stat -> BASF example -> top35 -> remaining206
-const WAFFLE_STEP_TO_STATE = { 1: 0, 2: 1, 3: 2, 4: 3 };
+const WAFFLE_STEP_TO_STATE = { 1: 0, 2: 1, 3: 2, 4: 3, 5: 3 };
 
 function onWaffleStep(api, stepNum) {
     api.applyStep(WAFFLE_STEP_TO_STATE[Number(stepNum)]);
