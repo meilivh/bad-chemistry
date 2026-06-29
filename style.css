@@ -233,7 +233,8 @@ li::marker {
 /* ---- Main chemicals chart ---- */
 .sector-label {
     text-anchor: middle;
-    font-size: 9px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .fa-line {
