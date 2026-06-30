@@ -900,3 +900,9 @@ initScrolly({
     drawChart: drawWaffleChart,
     onStep: onWaffleStep
 });
+
+window.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'scrollDelta') {
+        window.scrollBy(0, e.data.deltaY);
+    }
+});
