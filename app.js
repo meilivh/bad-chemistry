@@ -408,7 +408,7 @@ function drawMapChart(fullWidth, chart) {
     svg.append('rect').attr('width', W).attr('height', H).attr('fill', 'black');
 
     const legend = chart.append('div').attr('class', 'map-legend');
-    chart.append('div').attr('class', 'map-source-note').text('Hover for details');
+    chart.append('div').attr('class', 'map-source-note').text('Hover over a country or city for details');
     const tip = d3.select('body').append('div').attr('class', 'map-tip');
 
     const COUNTRY_DATA={NL:{emit:67.042566,fa:58.274091},DE:{emit:61.466473,fa:63.346983},FR:{emit:46.121302,fa:42.519758},BE:{emit:36.036433,fa:36.60445},ES:{emit:29.406783,fa:25.718685},PL:{emit:22.049517,fa:26.231765},IT:{emit:20.964698,fa:21.648592},CZ:{emit:16.237375,fa:7.408368},HU:{emit:9.25879,fa:9.072569},BG:{emit:9.08892,fa:6.970447},NO:{emit:6.997748,fa:8.063822},LT:{emit:6.621213,fa:6.640534},SK:{emit:5.735334,fa:5.378533},AT:{emit:5.683666,fa:7.069392},SE:{emit:4.353249,fa:4.249356},FI:{emit:3.232636,fa:3.927976},RO:{emit:2.802308,fa:4.489573},PT:{emit:2.667551,fa:3.218137},HR:{emit:1.620223,fa:2.246387},GR:{emit:1.051978,fa:1.143141},DK:{emit:.563135,fa:.228686},IE:{emit:.20298,fa:.09462},SI:{emit:.124636,fa:.18672},EE:{emit:0,fa:0}};
@@ -664,12 +664,14 @@ function drawWaffleChart(fullWidth, chart) {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
+    chart.append('div').attr('class', 'hover-hint').text('Hover over a dot for company details');
     const tip = d3.select('body').append('div').attr('class', 'waffle-tip');
 
     const barX = DOT_W + BAR_GAP;
     const BAR_RECT = 50;
 
-    svg.append('rect')
+    const barTrack = svg.append('rect')
+        .attr('class', 'waffle-bar-track')
         .attr('x', barX).attr('y', 0)
         .attr('width', BAR_RECT).attr('height', BAR_H)
         .attr('fill', '#444').attr('rx', 2);
@@ -692,18 +694,29 @@ function drawWaffleChart(fullWidth, chart) {
         .attr('rx', 2)
         .attr('opacity', 0);
 
-    [0.5, 0.803, 1].forEach(pct => {
-        svg.append('line')
-            .attr('x1', barX - 4).attr('x2', barX + BAR_RECT)
-            .attr('y1', pct * BAR_H).attr('y2', pct * BAR_H)
-            .attr('stroke', '#000').attr('stroke-width', 1.5);
+    const barLines = [];
+    const barPctLabels = [];
 
-        svg.append('text')
-            .attr('x', barX + (BAR_RECT/2)).attr('y', pct * BAR_H -10)
-            .attr('text-anchor', 'middle').attr('font-size',12).attr('fill', 'black')
-            .style('font-weight','bold')
-            .text(d3.format(',.0%')(pct));
+    [0.5, 0.803, 1].forEach(pct => {
+        barLines.push(
+            svg.append('line')
+                .attr('class', 'waffle-bar-line')
+                .attr('x1', barX - 4).attr('x2', barX + BAR_RECT)
+                .attr('y1', pct * BAR_H).attr('y2', pct * BAR_H)
+                .attr('stroke', '#000').attr('stroke-width', 1.5)
+        );
+
+        barPctLabels.push(
+            svg.append('text')
+                .attr('class', 'waffle-bar-pct')
+                .attr('x', barX + (BAR_RECT/2)).attr('y', pct * BAR_H -10)
+                .attr('text-anchor', 'middle').attr('font-size',12).attr('fill', 'black')
+                .style('font-weight','bold')
+                .text(d3.format(',.0%')(pct))
+        );
     });
+
+    const barGroup = svg.selectAll('.waffle-bar-track, .waffle-bar-line, .waffle-bar-pct');
 
     const DOT_R_BIG = 40;
     const DOT_R_NORM = DOT_R;
@@ -795,6 +808,7 @@ function drawWaffleChart(fullWidth, chart) {
             nameLabels.transition().duration(DUR).attr('opacity', 1);
             faLabels.transition().duration(DUR).attr('opacity', 1);
             barSegs.transition().duration(DUR).attr('opacity', (d, i) => i === 0 ? 1 : 0);
+            barGroup.transition().duration(DUR).style('opacity', 1);
         } else {
             nameLabels.transition().duration(DUR).attr('opacity', 0);
             faLabels.transition().duration(DUR).attr('opacity', 0);
@@ -811,7 +825,8 @@ function drawWaffleChart(fullWidth, chart) {
                     return '#666';
                 });
 
-            barSegs.transition().duration(DUR).attr('opacity', (d, i) => i <= state ? 1 : 0);
+            barSegs.transition().duration(DUR).attr('opacity', (d, i) => state >= 3 ? 0 : (i <= state ? 1 : 0));
+            barGroup.transition().duration(DUR).style('opacity', state >= 3 ? 0 : 1);
         }
     }
 
@@ -822,7 +837,7 @@ function drawWaffleChart(fullWidth, chart) {
 
 // chart visual state 0 = top50/BASF, 1 = top35/80%, 2 = remaining206/20%, 3 = overallocation
 // mapped to this section's narrative order: overallocation stat -> BASF example -> top35 -> remaining206
-const WAFFLE_STEP_TO_STATE = { 1: 0, 2: 1, 3: 2, 4: 3, 5: 3 };
+const WAFFLE_STEP_TO_STATE = { 1: 0, 2: 1, 3: 2, 4: 3 , 5: 3 };
 
 function onWaffleStep(api, stepNum) {
     api.applyStep(WAFFLE_STEP_TO_STATE[Number(stepNum)]);
