@@ -2,6 +2,10 @@ body, svg, text, span, h1, h2, p {
     font-family: 'Open Sans', sans-serif;
 }
 
+p {
+    font-size: clamp(0.8rem, 2vw, 1.25rem);
+}
+
 h3 {
     font-family: "Oswald", sans-serif;
 }
@@ -10,6 +14,12 @@ h3 {
     font-size: 23px;
     text-align: center;
     font-family: "Oswald", sans-serif;
+    padding-bottom: 10%;
+}
+
+.intro {
+    margin-top: 5%;
+    font-size: clamp(1rem, 2vw, 1.25rem);
 }
 
 a {

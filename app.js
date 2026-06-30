@@ -415,9 +415,8 @@ function drawMapChart(fullWidth, chart) {
 
     const CITY_DATA=[{country:"BE",city:"ANTWERPEN",lat:51.3366241,lon:4.2105982,emit:23.223619,fa:24.217231},{country:"NL",city:"SITTARD-GELEEN",lat:50.9897333,lon:5.721966,emit:15.732792,fa:14.55317},{country:"NL",city:"HOEK",lat:51.3357178,lon:3.783363,emit:13.937656,fa:9.267993},{country:"DE",city:"LUDWIGSHAFEN",lat:49.4874847,lon:8.3050029,emit:12.128187,fa:14.866371},{country:"NL",city:"SLUISKIL",lat:51.2749874,lon:3.8198167,emit:11.770532,fa:12.127517},{country:"NL",city:"MOERDIJK",lat:51.6843913,lon:4.5597576,emit:9.544309,fa:6.889895},{country:"DE",city:"KÖLN",lat:51.04638,lon:6.7907003,emit:8.225429,fa:8.217236},{country:"DE",city:"LUTHERSTADT WITTENBERG",lat:51.8677155,lon:12.5280291,emit:8.080171,fa:7.541045},{country:"FR",city:"LAVERA",lat:43.3880876,lon:5.0202478,emit:5.976176,fa:3.936666},{country:"DE",city:"WESSELING",lat:50.819134,lon:6.937942,emit:5.557275,fa:5.415494},{country:"NL",city:"ROTTERDAM",lat:51.9442057,lon:4.4101739,emit:4.611623,fa:3.358735},{country:"DE",city:"BOEHLEN",lat:51.187974,lon:12.3520774,emit:3.94795,fa:2.56313},{country:"FR",city:"PORT JEROME SUR SEINE",lat:49.4805836,lon:0.5696762,emit:3.184259,fa:3.065377},{country:"FR",city:"GONFREVILLE L'ORCHEZ",lat:49.4796829,lon:0.1932719,emit:2.827773,fa:2.01229},{country:"NL",city:"BOTLEK-ROTTERDAM",lat:51.8694444,lon:4.2864969,emit:2.794185,fa:2.064584},{country:"DE",city:"GROSSENKNETEN",lat:52.9533113,lon:8.2192285,emit:2.413186,fa:0.710982},{country:"BE",city:"TERTRE",lat:50.4795883,lon:3.8010306,emit:2.254633,fa:2.329844},{country:"DE",city:"LEUNA",lat:51.3254592,lon:12.0102885,emit:2.218111,fa:1.411937},{country:"NL",city:"BOTLEK ROTTERDAM",lat:51.8736195,lon:4.2545821,emit:2.08615,fa:2.189623},{country:"FR",city:"MARDYCK",lat:51.0292492,lon:2.2434177,emit:2.076441,fa:1.497479},{country:"DE",city:"MARL",lat:51.686478,lon:7.075579,emit:2.071277,fa:2.094572},{country:"FR",city:"DOMBASLE-SUR-MEURTHE",lat:48.6244746,lon:6.3474444,emit:2.052288,fa:1.658491},{country:"NL",city:"ROTTERDAM",lat:51.9442057,lon:4.4101739,emit:1.814835,fa:0.844231},{country:"FR",city:"LE GRAND QUEVILLY",lat:49.4233415,lon:1.0309151,emit:1.775025,fa:1.38162},{country:"FR",city:"LANEUVEVILLE DEVANT NANCY",lat:48.6406366,lon:6.2676707,emit:1.640395,fa:1.743136},{country:"FR",city:"OTTMARSHEIM",lat:47.7960926,lon:7.5241583,emit:1.492388,fa:1.471804},{country:"DE",city:"LEVERKUSEN",lat:51.0542506,lon:6.9243991,emit:1.454066,fa:2.299136},{country:"DE",city:"MÜNCHSMÜNSTER",lat:48.7677969,lon:11.6366946,emit:1.433633,fa:1.11923},{country:"FR",city:"FOS SUR MER",lat:43.4256723,lon:4.8460719,emit:1.382225,fa:1.350924},{country:"BE",city:"GENT",lat:51.0840165,lon:3.4030934,emit:1.202196,fa:0.949565},{country:"BE",city:"ZWIJNDRECHT",lat:51.2240002,lon:4.2824042,emit:1.193515,fa:1.794028},{country:"FR",city:"GONFREVILLE-L'ORCHER",lat:49.4553053,lon:0.2592241,emit:1.190423,fa:0.550246},{country:"BE",city:"KALLO (BEVEREN)",lat:51.2660881,lon:4.2246179,emit:1.116146,fa:0.817137},{country:"DE",city:"DORTMUND",lat:51.5443568,lon:7.4411015,emit:1.094286,fa:0.744122},{country:"BE",city:"FELUY",lat:50.5625782,lon:4.1986857,emit:1.091548,fa:0.668489},{country:"BE",city:"GEEL",lat:51.1163048,lon:5.0010884,emit:1.051408,fa:1.234992},{country:"FR",city:"NOTRE-DAME-DE-GRAVANCHON",lat:49.4794289,lon:0.5447773,emit:0.882808,fa:0.690224},{country:"NL",city:"BERGEN OP ZOOM",lat:51.5086374,lon:4.2484625,emit:0.86257,fa:0.374576},{country:"DE",city:"WORMS",lat:49.6376626,lon:8.2900379,emit:0.850285,fa:0.594261},{country:"DE",city:"BERNBURG",lat:51.7808581,lon:11.6811127,emit:0.725454,fa:0.98668},{country:"NL",city:"EUROPOORT-ROTTERDAM",lat:51.9597475,lon:4.0935622,emit:0.688571,fa:0.603976},{country:"FR",city:"CHALAMPE",lat:47.8137522,lon:7.5356683,emit:0.668259,fa:1.233394},{country:"BE",city:"JEMEPPE",lat:50.4471148,lon:4.6601503,emit:0.647872,fa:0.763681},{country:"FR",city:"FOS-SUR-MER",lat:43.4572238,lon:4.8505942,emit:0.640473,fa:0.397518},{country:"DE",city:"RHEINBERG",lat:51.564094,lon:6.4608375,emit:0.634703,fa:1.803996},{country:"DE",city:"HERNE",lat:51.513247,lon:7.1431362,emit:0.630392,fa:0.570767},{country:"FR",city:"SAINT-CLAIR-DU-RHONE",lat:45.4402634,lon:4.7677693,emit:0.620302,fa:0.406372},{country:"BE",city:"TESSENDERLO",lat:51.050538,lon:4.9994248,emit:0.58622,fa:0.452957},{country:"FR",city:"ANGLEFORT",lat:45.9138429,lon:5.8172339,emit:0.565491,fa:0.541548},{country:"FR",city:"SAINT AVOLD",lat:49.141183,lon:6.7113433,emit:0.563999,fa:0.718128},{country:"DE",city:"STASSFURT",lat:51.8618857,lon:11.5846841,emit:0.529546,fa:1.396407},{country:"DE",city:"WILHELMSHAVEN",lat:53.6223854,lon:8.0575147,emit:0.516791,fa:0.270667}];
 
-    const ANNOTATED = new Set(['ANTWERPEN', 'SITTARD-GELEEN', 'LUDWIGSHAFEN']);
-    // narrative order — matches the order cities are introduced across steps 2, 3, 4
-    const REVEAL_ORDER = ['ANTWERPEN', 'SITTARD-GELEEN', 'LUDWIGSHAFEN'];
+    const REVEAL_ORDER = ['ANTWERPEN', 'SITTARD-GELEEN', 'LUDWIGSHAFEN']; // narrative order — matches the order cities are introduced across steps 2, 3, 4
+    const ANNOTATED = new Set(REVEAL_ORDER);
 
     function featureISO2(f) {
         return f.properties && (f.properties.ISO2 || f.properties.iso2 || f.properties.ISO_A2);
@@ -573,10 +572,34 @@ function drawMapChart(fullWidth, chart) {
             cityAnnotGroups[d.city] = g;
         });
 
-        function applyStep(step) {
+        // shared by steps 2, 3, and 4 — they all show the same zoomed-in
+        // view and differ only in which cities' annotations are revealed
+        function showZoomedView(citiesToShow) {
+            const DUR = 700;
+            currentZoomed = true;
+            svg.selectAll('.map-country')
+                .transition().duration(DUR)
+                .attr('d', pathZoom)
+                .attr('fill', d => {
+                    const iso2 = featureISO2(d);
+                    return ['NL', 'DE', 'BE'].includes(iso2) ? '#d5cfc4' : '#ece8df';
+                })
+                .attr('stroke-width', 0.4);
+
+            cityGroup.transition().duration(DUR).attr('opacity', 1);
+            annotGroup.transition().duration(DUR).attr('opacity', 1);
+
+            Object.entries(cityAnnotGroups).forEach(([city, g]) => {
+                g.transition().duration(DUR).style('opacity', citiesToShow.includes(city) ? 1 : 0);
+            });
+
+            updateLegend(2);
+        }
+
+        function applyStep(stepNum) {
             const DUR = 700;
 
-            if (step === 1) {
+            if (stepNum == 1) {
                 currentZoomed = false;
                 svg.selectAll('.map-country')
                     .transition().duration(DUR)
@@ -589,30 +612,20 @@ function drawMapChart(fullWidth, chart) {
 
                 cityGroup.transition().duration(DUR / 2).attr('opacity', 0);
                 annotGroup.transition().duration(DUR / 2).attr('opacity', 0);
-            } else {
-                // steps 2-4 share the same zoomed-in view; only the set of
-                // revealed city annotations changes (cumulative, one per step)
-                currentZoomed = true;
-                svg.selectAll('.map-country')
-                    .transition().duration(DUR)
-                    .attr('d', pathZoom)
-                    .attr('fill', d => {
-                        const iso2 = featureISO2(d);
-                        return ['NL', 'DE', 'BE'].includes(iso2) ? '#d5cfc4' : '#ece8df';
-                    })
-                    .attr('stroke-width', 0.4);
-
-                cityGroup.transition().duration(DUR).attr('opacity', 1);
-                annotGroup.transition().duration(DUR).attr('opacity', 1);
-
-                const revealCount = step - 1; // step 2 -> 1 city, step 3 -> 2, step 4 -> 3
-                const citiesToShow = REVEAL_ORDER.slice(0, revealCount);
-                Object.entries(cityAnnotGroups).forEach(([city, g]) => {
-                    g.transition().duration(DUR).style('opacity', citiesToShow.includes(city) ? 1 : 0);
-                });
+                updateLegend(1);
             }
 
-            updateLegend(step === 1 ? 1 : 2);
+            if (stepNum == 2) {
+                showZoomedView(REVEAL_ORDER.slice(0, 1)); // Antwerpen
+            }
+
+            if (stepNum == 3) {
+                showZoomedView(REVEAL_ORDER.slice(0, 2)); // + Sittard-Geleen
+            }
+
+            if (stepNum == 4) {
+                showZoomedView(REVEAL_ORDER.slice(0, 3)); // + Ludwigshafen
+            }
         }
 
         api.applyStep = applyStep;
@@ -622,16 +635,19 @@ function drawMapChart(fullWidth, chart) {
     return api;
 }
 
+// The map's GeoJSON loads asynchronously, so its step logic (applyStep,
+// above) can only be wired up once that data has arrived — api.applyStep
+// stays null until then, hence the guard below.
 function onMapStep(api, stepNum) {
-    if (api.applyStep) api.applyStep(Number(stepNum));
+    if (api.applyStep) api.applyStep(stepNum);
 }
 
 /* ============================================================
    WAFFLE SECTION — dot-grid + bar showing free allowance
    concentration across all 707 recipient companies.
-   Chart has 4 visual states (0-3), but they're mapped to this
-   section's 4 narrative steps in a different order — see
-   WAFFLE_STEP_TO_STATE below for why.
+   drawWaffleChart returns the raw elements; onWaffleStep (below
+   the function) drives the 4 steps directly, same pattern as
+   onHeadlineStep and onChemicalsStep.
    ============================================================ */
 function drawWaffleChart(fullWidth, chart) {
     const margin = {top: 10, right: 0, bottom: 5, left: 0},
@@ -719,7 +735,6 @@ function drawWaffleChart(fullWidth, chart) {
     const barGroup = svg.selectAll('.waffle-bar-track, .waffle-bar-line, .waffle-bar-pct');
 
     const DOT_R_BIG = 40;
-    const DOT_R_NORM = DOT_R;
 
     const TOP50 = OWNERS.filter(d => d.c < 0.5);
     const top50Cols = 4;
@@ -733,8 +748,8 @@ function drawWaffleChart(fullWidth, chart) {
 
     function top50X(d) { return (d.i % top50Cols) * top50SpacingX + DOT_R_BIG; }
     function top50Y(d) { return Math.floor(d.i / top50Cols) * top50SpacingY + DOT_R_BIG + top50OffsetY; }
-    function gridX(d) { return (d.i % COLS) * DOT_STEP + DOT_R_NORM; }
-    function gridY(d) { return Math.floor(d.i / COLS) * DOT_STEP + DOT_R_NORM; }
+    function gridX(d) { return (d.i % COLS) * DOT_STEP + DOT_R; }
+    function gridY(d) { return Math.floor(d.i / COLS) * DOT_STEP + DOT_R; }
 
     const dots = svg.selectAll('.waffle-dot')
         .data(OWNERS)
@@ -742,7 +757,7 @@ function drawWaffleChart(fullWidth, chart) {
         .attr('class', 'waffle-dot')
         .attr('cx', gridX)
         .attr('cy', gridY)
-        .attr('r', DOT_R_NORM)
+        .attr('r', DOT_R)
         .attr('fill', 'lightgrey')
         .style('cursor', 'default')
         .on('mouseover', function(event, d) {
@@ -788,59 +803,72 @@ function drawWaffleChart(fullWidth, chart) {
         .attr('opacity', 1)
         .text(d => d3.format(',.0f')(d.fa));
 
-    function applyStep(state) {
-        const DUR = 550;
-
-        if (state === 0) {
-            dots.filter(d => d.i < 20)
-                .transition().duration(DUR)
-                .attr('cx', top50X).attr('cy', top50Y)
-                .attr('r', d => radiusScale(d.fa))
-                .attr('fill', GRP_COLORS[0]);
-
-            dots.filter(d => d.i >= 20)
-                .transition().duration(DUR)
-                .attr('cx', gridX).attr('cy', gridY)
-                .attr('r', DOT_R_NORM)
-                .attr('opacity', 0)
-                .attr('fill', '#666');
-
-            nameLabels.transition().duration(DUR).attr('opacity', 1);
-            faLabels.transition().duration(DUR).attr('opacity', 1);
-            barSegs.transition().duration(DUR).attr('opacity', (d, i) => i === 0 ? 1 : 0);
-            barGroup.transition().duration(DUR).style('opacity', 1);
-        } else {
-            nameLabels.transition().duration(DUR).attr('opacity', 0);
-            faLabels.transition().duration(DUR).attr('opacity', 0);
-            dots.transition().duration(DUR)
-                .attr('cx', gridX).attr('cy', gridY)
-                .attr('r', DOT_R_NORM)
-                .attr('opacity', 1)
-                .attr('fill', d => {
-                    const g = grp(d);
-                    if (state >= 3) return d.ov ? '#D10787' : '#666';
-                    if (g === 0 && state >= 1) return GRP_COLORS[0];
-                    if (g === 1 && state >= 1) return GRP_COLORS[1];
-                    if (g === 2 && state >= 2) return GRP_COLORS[2];
-                    return '#666';
-                });
-
-            barSegs.transition().duration(DUR).attr('opacity', (d, i) => state >= 3 ? 0 : (i <= state ? 1 : 0));
-            barGroup.transition().duration(DUR).style('opacity', state >= 3 ? 0 : 1);
-        }
-    }
-
-    applyStep(0);
-
-    return { applyStep };
+    const api = { dots, nameLabels, faLabels, barSegs, barGroup, top50X, top50Y, gridX, gridY, grp, GRP_COLORS, DOT_R, radiusScale };
+    onWaffleStep(api, 1); // paint the default view before any step is actually scrolled to
+    return api;
 }
 
-// chart visual state 0 = top50/BASF, 1 = top35/80%, 2 = remaining206/20%, 3 = overallocation
-// mapped to this section's narrative order: overallocation stat -> BASF example -> top35 -> remaining206
-const WAFFLE_STEP_TO_STATE = { 1: 0, 2: 1, 3: 2, 4: 3 , 5: 3 };
-
+// step 1: top recipients enlarged and named (BASF and peers)
+// step 2: top 35 companies highlighted -> 80% of the free allowance budget
+// step 3: remaining 206 companies highlighted -> the other 20%
+// step 4 (and any step beyond): which individual companies were overallocated
 function onWaffleStep(api, stepNum) {
-    api.applyStep(WAFFLE_STEP_TO_STATE[Number(stepNum)]);
+    const { dots, nameLabels, faLabels, barSegs, barGroup, top50X, top50Y, gridX, gridY, grp, GRP_COLORS, DOT_R, radiusScale } = api;
+    const DUR = 550;
+
+    if (stepNum == 1) {
+        dots.filter(d => d.i < 20)
+            .transition().duration(DUR)
+            .attr('cx', top50X).attr('cy', top50Y)
+            .attr('r', d => radiusScale(d.fa))
+            .attr('fill', GRP_COLORS[0]);
+
+        dots.filter(d => d.i >= 20)
+            .transition().duration(DUR)
+            .attr('cx', gridX).attr('cy', gridY)
+            .attr('r', DOT_R)
+            .attr('opacity', 0)
+            .attr('fill', '#666');
+
+        nameLabels.transition().duration(DUR).attr('opacity', 1);
+        faLabels.transition().duration(DUR).attr('opacity', 1);
+        barSegs.transition().duration(DUR).attr('opacity', (d, i) => i === 0 ? 1 : 0);
+        barGroup.transition().duration(DUR).style('opacity', 1);
+        return;
+    }
+
+    // steps 2-4 all show the full grid (no enlarged top-recipient bubbles)
+    nameLabels.transition().duration(DUR).attr('opacity', 0);
+    faLabels.transition().duration(DUR).attr('opacity', 0);
+
+    if (stepNum == 2) {
+        dots.transition().duration(DUR)
+            .attr('cx', gridX).attr('cy', gridY).attr('r', DOT_R).attr('opacity', 1)
+            .attr('fill', d => {
+                const g = grp(d);
+                if (g === 0) return GRP_COLORS[0];
+                if (g === 1) return GRP_COLORS[1];
+                return '#666';
+            });
+        barSegs.transition().duration(DUR).attr('opacity', (d, i) => i <= 1 ? 1 : 0);
+        barGroup.transition().duration(DUR).style('opacity', 1);
+    }
+
+    if (stepNum == 3) {
+        dots.transition().duration(DUR)
+            .attr('cx', gridX).attr('cy', gridY).attr('r', DOT_R).attr('opacity', 1)
+            .attr('fill', d => GRP_COLORS[grp(d)]);
+        barSegs.transition().duration(DUR).attr('opacity', 1);
+        barGroup.transition().duration(DUR).style('opacity', 1);
+    }
+
+    if (stepNum >= 4) {
+        dots.transition().duration(DUR)
+            .attr('cx', gridX).attr('cy', gridY).attr('r', DOT_R).attr('opacity', 1)
+            .attr('fill', d => d.ov ? '#D10787' : '#666');
+        barSegs.transition().duration(DUR).attr('opacity', 0);
+        barGroup.transition().duration(DUR).style('opacity', 0);
+    }
 }
 
 var width = d3.select('body').node().offsetWidth;
