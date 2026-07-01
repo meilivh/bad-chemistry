@@ -2,8 +2,12 @@ body, svg, text, span, h1, h2, p {
     font-family: 'Open Sans', sans-serif;
 }
 
+body {
+    overflow-x: hidden; /* prevent any accidental horizontal scroll */
+}
+
 p {
-    font-size: clamp(0.8rem, 2vw, 1.25rem);
+    font-size: clamp(0.9rem, 1.2vw, 1.4rem);
 }
 
 h3 {
@@ -74,7 +78,9 @@ p.scrolly-overlay {
    100% width breaks that deadlock (this is what was causing the
    "tiny chart" bug). ---- */
 .headline__graphic .chart,
-.scroll__graphic .chart {
+.scroll__graphic .chart,
+.map__graphic .chart,
+.waffle__graphic .chart {
     width: 100%;
 }
 
@@ -92,7 +98,7 @@ p.scrolly-overlay {
 #headline, #scroll, #map, #waffle {
     position: relative;
     display: flex;
-    margin: 0 auto;
+    width: 100%;
     background-color: black;
 }
 
@@ -106,14 +112,16 @@ p.scrolly-overlay {
     top: 0;
     height: 100vh;
     flex: 1;
+    max-width: 800px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5% 1%;
+    padding: 2% 1%;
 }
 
 .headline__text, .scroll__text, .map__text, .waffle__text {
     flex: 1;
-    max-width: none;
+    max-width: 800px;
     padding: 0 5rem;
     color: white;
 }
