@@ -660,10 +660,10 @@ function drawWaffleChart(fullWidth, chart) {
         if (d.c <= 0.803) return 1;
         return 2;
     }
-    const GRP_COLORS = [ '#40B4C9','white', '#54F9DB'];
+    const GRP_COLORS = [ '#40B4C9','lightgrey', '#54F9DB'];
 
     const COLS = 30, BAR_GAP = 16;
-    const BAR_RECT = 24;     // bar rectangle width
+    const BAR_RECT = 40;     // bar rectangle width
     const BAR_LABEL_W = 36;  // space for % labels to the right of the bar rect
     const BAR_W = BAR_RECT + BAR_LABEL_W; // total column width reserved for the bar
     const DOT_GAP = 3;
@@ -731,7 +731,7 @@ function drawWaffleChart(fullWidth, chart) {
             svg.append('text')
                 .attr('class', 'waffle-bar-pct')
                 .attr('x', barX + (BAR_RECT/2)).attr('y', pct * BAR_H -10)
-                .attr('text-anchor', 'middle').attr('font-size',12).attr('fill', 'black')
+                .attr('text-anchor', 'middle').attr('font-size',11).attr('fill', 'black')
                 .style('font-weight','bold')
                 .text(d3.format(',.0%')(pct))
         );
@@ -802,11 +802,11 @@ function drawWaffleChart(fullWidth, chart) {
         .attr('x', top50X)
         .attr('y', d=>top50Y(d)+3)
         .attr('text-anchor', 'middle')
-        .attr('font-size', d=>radiusScale(d.fa))
+        .attr('font-size', d=>radiusScale(d.fa)*0.9)
         .attr('font-weight','bold')
         .attr('fill', 'white')
         .attr('opacity', 1)
-        .text(d => d3.format(',.0f')(d.fa));
+        .text(d => `${d3.format(',.0f')(d.fa)}${(d.i == 0?'M':'')}`);
 
     const api = { dots, nameLabels, faLabels, barSegs, barGroup, top50X, top50Y, gridX, gridY, grp, GRP_COLORS, DOT_R, radiusScale };
     onWaffleStep(api, 1); // paint the default view before any step is actually scrolled to
