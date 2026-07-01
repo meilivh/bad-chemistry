@@ -14,8 +14,12 @@ h3 {
     font-family: "Oswald", sans-serif;
 }
 
+li {
+    font-size: clamp(0.9rem, 1.2vw, 1.4rem);
+}
+
 .conclusion {
-    font-size: 23px;
+    font-size: clamp(2rem, 2.3vw, 2.6rem);
     text-align: center;
     font-family: "Oswald", sans-serif;
     padding-bottom: 10%;
@@ -128,7 +132,7 @@ p.scrolly-overlay {
 
 .chart-title {
     font-family: "Oswald", sans-serif;
-    font-size: 1.17em;
+    font-size: 1.2em;
     font-weight: bold;
     margin-left:20px;
     color: white;
@@ -177,20 +181,7 @@ a.button {
 
 @media (max-width: 768px) {
     .paragraph {
-        padding: 10% 1% 10% 1%;
-    }
-
-    #headline, #scroll, #map, #waffle {
-        display: block;
-    }
-
-    .headline__graphic, .scroll__graphic, .map__graphic, .waffle__graphic {
-        height: 100vh;
-    }
-
-    .headline__text, .scroll__text, .map__text, .waffle__text {
-        max-width: none;
-        padding: 0 1rem;
+        padding: 10% 5% 10% 5%;
     }
 
     div.img-chart {
@@ -201,7 +192,62 @@ a.button {
     div.img-chart img {
         object-fit: contain;
         width: 100%;
-    }    
+    }
+
+    /* ---- Mobile scrollytelling: overlay layout ----
+       Both the graphic and the text share the same grid cell.
+       The graphic is sticky at the top (short height so there's room
+       for the text cards below it), text is in front (z-index: 1)
+       and scrolls over the chart. ---- */
+    #headline, #scroll, #map, #waffle {
+        display: grid;
+    }
+
+    .headline__graphic, .scroll__graphic, .map__graphic, .waffle__graphic {
+        grid-column: 1;
+        grid-row: 1;
+        align-self: start;
+        position: sticky;
+        top: 0;
+        height: 50vh;
+        max-width: none;
+        z-index: 0;
+        padding: 1% 2%;
+    }
+
+    .headline__text, .scroll__text, .map__text, .waffle__text {
+        grid-column: 1;
+        grid-row: 1;
+        position: relative;
+        z-index: 1;
+        max-width: none;
+        padding: 0;
+        /* push the first step down so it starts below the chart,
+           giving the user a moment to see the chart before text appears.
+           padding-bottom gives the last step enough scroll distance to trigger. */
+        padding-top: 50vh;
+        padding-bottom: 40vh;
+    }
+
+    /* step cards get a semi-transparent background so they're
+       readable when they scroll over the chart */
+    .step {
+        margin: 0 0.75rem 40vh;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.82);
+        border-radius: 6px;
+        min-height: unset;
+        height: auto;
+        display: block;
+    }
+
+    .step p {
+        margin: 0;
+    }
+
+    .step.last {
+        background: rgba(0, 0, 0, 0);
+    }
 }
 
 /* ---- Waffle chart (company concentration dot-grid + bar) ----
@@ -259,7 +305,7 @@ a.button {
 }
 
 .source-note {
-    font-size: 10px;
+    font-size: 12px;
     color: #aaa;
     margin-top: 5px;
 }
@@ -292,7 +338,7 @@ a.button {
 /* ---- Main chemicals chart ---- */
 .sector-label {
     text-anchor: middle;
-    font-size: 12px;
+    font-size: clamp(0.9rem, 1.2vw, 1.4rem);
     font-weight: bold;
 }
 
@@ -322,18 +368,22 @@ a.button {
     text-anchor: middle;
     font-weight: bold;
     fill: white;
-    font-size: 25px;
+    font-size: clamp(2.1rem, 2.3vw, 2.5rem);
+}
+
+.total-emissions-label.sub {
+    font-size: clamp(1.1rem, 1.3vw, 1.5rem);
 }
 
 .total-fa-label {
     text-anchor: middle;
     font-weight: bold;
     fill: #D10787;
-    font-size: 25px;
+    font-size: clamp(0.9rem, 1.2vw, 1.4rem);
 }
 
 .emissions-label {
-    font-size: 10px;
+    font-size: clamp(0.6rem, 0.9vw, 1.1rem);
 }
 
 .fa-fill {

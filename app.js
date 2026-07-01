@@ -14,7 +14,7 @@ function initScrolly(config) {
 
     // each section supplies its own chart-drawing function;
     // whatever it returns (svg, scales, selections) stays local to this closure
-    var chartApi = config.drawChart(config.width, chart);
+    var chartApi = config.drawChart(config.width, config.height, chart);
 
     function handleResize() {
         scroller.resize();
@@ -53,7 +53,7 @@ function initScrolly(config) {
    Step 2: 31 of them turn blue (98% covered by free allowances)
    Step 3: the last one turns pink (2% actually paid)
    ============================================================ */
-function drawHeadlineChart(fullWidth, chart) {
+function drawHeadlineChart(fullWidth, fullHeight, chart) {
     const margin = {top: 20, right: fullWidth*0.05, bottom: 20, left: fullWidth*0.05},
         width = (fullWidth > 768 ? fullWidth / 2 : fullWidth) - margin.left - margin.right;
 
@@ -120,10 +120,12 @@ function onHeadlineStep(api, stepNum) {
 /* ============================================================
    MAIN CHEMICALS SECTION — historical trend chart
    ============================================================ */
-function drawChemicalsChart(fullWidth, chart) {
+function drawChemicalsChart(fullWidth, fullHeight, chart) {
     const margin = {top: 10, right: fullWidth*0.05, bottom: 30, left: fullWidth*0.05},
         width = (fullWidth>768?fullWidth/2:fullWidth) - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom;
+        height = fullHeight>16000?600:fullHeight*0.03 - margin.top - margin.bottom;
+
+    console.log(fullHeight)
 
     const svg = chart.append("svg")
         .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
@@ -207,11 +209,10 @@ function drawChemicalsChart(fullWidth, chart) {
         .text('1.3 GtCO₂e');
 
     svg.append('text')
-        .attr('class', 'total-emissions-label')
+        .attr('class', 'total-emissions-label sub')
         .attr('x', x(2018))
         .attr('y', y(60))
-        .attr('dy', 20)
-        .style('font-size', '13px')
+        .attr('dy', 24)
         .text('emitted since 2013');
 
     svg.selectAll('.sector-label')
@@ -258,7 +259,7 @@ function drawChemicalsChart(fullWidth, chart) {
         .attr('x', x(2013))
         .attr('y', y(chemicals_em_fa.get(2013).em))
         .attr('dx', -5)
-        .attr('dy', 13)
+        .attr('dy', 17)
         .style('text-anchor', 'end')
         .text('since phase 3');
 
@@ -277,7 +278,7 @@ function drawChemicalsChart(fullWidth, chart) {
         .attr('x', x(2021))
         .attr('y', y(chemicals_em_fa.get(2021).em))
         .attr('dx', 5)
-        .attr('dy', 5)
+        .attr('dy', 9)
         .style('text-anchor', 'start')
         .text('demand spike')
         .style('opacity', 0);
@@ -298,7 +299,7 @@ function drawChemicalsChart(fullWidth, chart) {
         .attr('x', x(2024))
         .attr('y', y(chemicals_em_fa.get(2024).em))
         .attr('dx', -2)
-        .attr('dy', 28)
+        .attr('dy', 32)
         .style('text-anchor', 'end')
         .style('fill','black')
         .text('increase')
@@ -392,7 +393,7 @@ function onChemicalsStep(api, stepNum) {
    Step 3: zoom view persists, add Sittard-Geleen's annotation
    Step 4: zoom view persists, add Ludwigshafen's annotation
    ============================================================ */
-function drawMapChart(fullWidth, chart) {
+function drawMapChart(fullWidth, fullHeight, chart) {
     const margin = {top: 0, right: fullWidth * 0.05, bottom: 10, left: fullWidth * 0.05},
         width = (fullWidth > 768 ? fullWidth / 2 : fullWidth) - margin.left - margin.right,
         W = width,
@@ -440,7 +441,7 @@ function drawMapChart(fullWidth, chart) {
     const offsets = {
         'ANTWERPEN':      { dx: 0, dy: -100, anchor: 'start' },
         'SITTARD-GELEEN': { dx: 0, dy: -65, anchor: 'start' },
-        'LUDWIGSHAFEN':   { dx: 0, dy: -100, anchor: 'start' },
+        'LUDWIGSHAFEN':   { dx: 0, dy: -65, anchor: 'start' },
     };
 
     function updateLegend(step) {
@@ -650,7 +651,7 @@ function onMapStep(api, stepNum) {
    the function) drives the 4 steps directly, same pattern as
    onHeadlineStep and onChemicalsStep.
    ============================================================ */
-function drawWaffleChart(fullWidth, chart) {
+function drawWaffleChart(fullWidth, fullHeight, chart) {
     const margin = {top: 10, right: 0, bottom: 5, left: 0},
         outerWidth = (fullWidth > 768 ? fullWidth / 2 : fullWidth) - margin.left - margin.right;
 
@@ -877,9 +878,11 @@ function onWaffleStep(api, stepNum) {
 }
 
 var width = d3.select('body').node().offsetWidth;
+var height = d3.select('body').node().offsetHeight;
 
 initScrolly({
     width: width,
+    height: height,
     sectionId: 'headline',
     drawChart: drawHeadlineChart,
     onStep: onHeadlineStep
@@ -887,6 +890,7 @@ initScrolly({
 
 initScrolly({
     width: width,
+    height: height,
     sectionId: 'scroll',
     drawChart: drawChemicalsChart,
     onStep: onChemicalsStep
@@ -894,6 +898,7 @@ initScrolly({
 
 initScrolly({
     width: width,
+    height: height,
     sectionId: 'map',
     drawChart: drawMapChart,
     onStep: onMapStep
@@ -901,6 +906,7 @@ initScrolly({
 
 initScrolly({
     width: width,
+    height: height,
     sectionId: 'waffle',
     drawChart: drawWaffleChart,
     onStep: onWaffleStep
