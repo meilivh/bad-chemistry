@@ -181,6 +181,10 @@ a.button {
 }
 
 @media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+    }
+
     .paragraph {
         padding: 10% 5% 10% 5%;
     }
@@ -265,6 +269,10 @@ a.button {
     .step.last {
         background: rgba(0, 0, 0, 0);
     }
+
+    .waffle-name-label {
+        font-size: 2px;
+    }    
 }
 
 /* ---- Waffle chart (company concentration dot-grid + bar) ----
@@ -285,6 +293,10 @@ a.button {
     line-height: 1.65;
     transition: opacity 0.1s;
     max-width: 220px;
+}
+
+.waffle-name-label {
+    font-size: clamp(7px, 1.2vw, 1.4rem);
 }
 
 .waffle-tip.show {
@@ -319,6 +331,18 @@ a.button {
     border-radius: 50%;
     display: inline-block;
     flex-shrink: 0;
+}
+
+g.tick > text {
+    font-size: clamp(10px, 1.2vw, 1.4rem);
+}
+
+.city-label-name {
+    font-size: clamp(10px, 1.2vw, 1.4rem);
+}
+
+.city-label-figures {
+    font-size: clamp(8px, 0.8vw, 1rem);
 }
 
 .source-note {
