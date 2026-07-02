@@ -135,6 +135,7 @@ p.scrolly-overlay {
     font-size: 1.2em;
     font-weight: bold;
     margin-left:20px;
+    margin-top: 0%;
     color: white;
 }
 
@@ -213,6 +214,22 @@ a.button {
         max-width: none;
         z-index: 0;
         padding: 1% 2%;
+        /* override the desktop center-center positioning so content
+           starts at the top — without this, align-items:center from
+           the desktop rule vertically centers .chart inside 50vh and
+           overflow:hidden clips both top AND bottom (showing only middle) */
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    /* clip charts to the sticky panel — safe because .chart is a
+       DESCENDANT of the sticky element, not an ancestor */
+    .headline__graphic .chart,
+    .scroll__graphic .chart,
+    .map__graphic .chart,
+    .waffle__graphic .chart {
+        max-height: 48vh;
+        overflow: hidden;
     }
 
     .headline__text, .scroll__text, .map__text, .waffle__text {
