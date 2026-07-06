@@ -12,6 +12,7 @@ p {
 
 h3 {
     font-family: "Oswald", sans-serif;
+    font-size: clamp(1.2rem, 1.6vw, 2rem);
 }
 
 li {
@@ -22,7 +23,7 @@ li {
     font-size: clamp(2rem, 2.3vw, 2.6rem);
     text-align: center;
     font-family: "Oswald", sans-serif;
-    padding-bottom: 10%;
+    padding-bottom: 50%;
 }
 
 .intro {
@@ -331,6 +332,10 @@ a.button {
     border-radius: 50%;
     display: inline-block;
     flex-shrink: 0;
+}
+
+.remove-margin {
+    padding-top: 0;
 }
 
 g.tick > text {
