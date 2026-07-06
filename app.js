@@ -516,8 +516,8 @@ function drawMapChart(fullWidth, fullHeight, chart) {
             .on('mousemove', function(event, d) {
                 if (!currentZoomed) return;
                 const ovLabel = d.fa > d.emit
-                    ? `<span style="color:#f1948a">+${(d.fa - d.emit).toFixed(2)} Mt surplus</span>`
-                    : `<span style="color:#85c1e9">${(d.fa - d.emit).toFixed(2)} Mt deficit</span>`;
+                    ? `<span style="color:#f1948a">+${d3.format(',.0f')(d.fa*1000000 - d.emit*1000000)} tonnes overallocated</span>`
+                    : `<span style="color:#85c1e9">${d3.format(',.0%')(d.fa/d.emit)} covered by free allowances</span>`;
                 tip.html(`<strong>${d.city}</strong> (${d.country})<br>Emissions: ${d.emit.toFixed(2)} MtCO₂<br>Free allowances: ${d.fa.toFixed(2)} Mt<br>${ovLabel}`)
                     .classed('show', true)
                     .style('left', (event.clientX + 14) + 'px')
@@ -916,8 +916,8 @@ function onWaffleStep(api, stepNum) {
             if (d.i < 10) {
                 const surplus = (d.fa - d.em).toFixed(3);
                 const surplusLabel = d.ov
-                    ? `<span style="color:#f1948a">+${surplus} Mt surplus</span>`
-                    : `<span style="color:#85c1e9">${surplus} Mt deficit</span>`;
+                    ? `<span style="color:#f1948a">+${d3.format(',.0f')(d.fa*1000000 - d.em*1000000)} tonnes overallocated</span>`
+                    : `<span style="color:#85c1e9">${d3.format(',.0%')(d.fa/d.em)} covered by free allowances</span>`;
                 const emLabel = d.em > 0 ? d.em.toFixed(3) + ' MtCO₂' : 'not reported';
                 tip.html(`<strong>${d.n}</strong><br>Free allowances: ${d.fa.toFixed(3)} MtCO₂<br>Verified emissions: ${emLabel}<br>${surplusLabel}`)
                     .classed('show', true);
@@ -935,10 +935,10 @@ function onWaffleStep(api, stepNum) {
     nameLabels.transition().duration(DUR).attr('opacity', 0);
     faLabels.transition().duration(DUR).attr('opacity', 0);
     dots.on('mouseover', function(event, d) {
-        const surplus = (d.fa - d.em).toFixed(3);
+        const surplus = (d.fa*1000000 - d.em*1000000).toFixed(3);
         const surplusLabel = d.ov
-            ? `<span style="color:#f1948a">+${surplus} Mt surplus</span>`
-            : `<span style="color:#85c1e9">${surplus} Mt deficit</span>`;
+                    ? `<span style="color:#f1948a">+${d3.format(',.0f')(d.fa*1000000 - d.em*1000000)} tonnes overallocated</span>`
+                    : `<span style="color:#85c1e9">${d3.format(',.0%')(d.fa/d.em)} covered by free allowances</span>`;
         const emLabel = d.em > 0 ? d.em.toFixed(3) + ' MtCO₂' : 'not reported';
         tip.html(`<strong>${d.n}</strong><br>Free allowances: ${d.fa.toFixed(3)} MtCO₂<br>Verified emissions: ${emLabel}<br>${surplusLabel}`)
             .classed('show', true);
