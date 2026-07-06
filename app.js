@@ -483,11 +483,6 @@ function drawMapChart(fullWidth, fullHeight, chart) {
             .attr('stroke', '#f4f1ea')
             .attr('stroke-width', 0.6)
 
-        // countryPaths.append('title')
-        //     .text(d=>{
-        //         return 1
-        //         console.log(d)
-        //         return COUNTRY_DATA[featureISO2(d)]})
 
         countryPathSel
             .on('mousemove', function(event, d) {
@@ -545,42 +540,6 @@ function drawMapChart(fullWidth, fullHeight, chart) {
                 const [x, y] = pathEurope.centroid(d);
                 return `translate(${x},${y})`;
             });
-
-        // white halo behind the text (via paint-order) keeps labels legible
-        // over any choropleth color without needing a background rect
-        countryLabelSel.append('text')
-            .attr('class', 'country-label-name')
-            .attr('text-anchor', 'middle')
-            .attr('y', -4)
-            .attr('font-size', fullWidth > 1000 ? 12 : 10)
-            .attr('font-weight', '700')
-            .attr('fill', '#1a1a1a')
-            .text(d => d.properties.NAME || featureISO2(d));
-
-        let countryLabelFigs = countryLabelSel.append('text')
-            .attr('class', 'country-label-figures')
-            .attr('text-anchor', 'middle')
-            .attr('y', fullWidth > 1000 ? 11 : 9)
-            .attr('font-size', fullWidth > 1000 ? 10 : 8)
-            .attr('fill', '#1a1a1a')
-
-        countryLabelFigs.append('tspan')
-            .attr('dx', 0)
-            .attr('dy', 0)
-            .attr('text-anchor', 'middle')
-            .text(d => {
-                const v = COUNTRY_DATA[featureISO2(d)];
-                return `${v.emit.toFixed(1)} Mt emitted`;
-            });
-
-        countryLabelFigs.append('tspan')
-            .attr('dx', 0)
-            .attr('dy', 10)
-            .attr('text-anchor', 'middle')
-            .text(d => {
-                const v = COUNTRY_DATA[featureISO2(d)];
-                return `${v.fa.toFixed(1)} Mt free`;
-            });            
 
         const annotGroup = svg.append('g').attr('class', 'map-annots').attr('opacity', 0);
         const annotData = CITY_DATA.filter(d => ANNOTATED.has(d.city));
