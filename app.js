@@ -471,7 +471,7 @@ function drawMapChart(fullWidth, fullHeight, chart) {
 
         const countryPaths = svg.append('g').attr('class', 'map-countries');
 
-        countryPaths.selectAll('path')
+        const countryPathSel = countryPaths.selectAll('path')
             .data(worldFeatures)
             .join('path')
             .attr('class', 'map-country')
@@ -483,10 +483,13 @@ function drawMapChart(fullWidth, fullHeight, chart) {
             .attr('stroke', '#f4f1ea')
             .attr('stroke-width', 0.6)
 
-        countryPaths.append('title')
-            .text(d=>JSON.stringify(d))
+        // countryPaths.append('title')
+        //     .text(d=>{
+        //         return 1
+        //         console.log(d)
+        //         return COUNTRY_DATA[featureISO2(d)]})
 
-        countryPaths
+        countryPathSel
             .on('mousemove', function(event, d) {
                 const v = COUNTRY_DATA[featureISO2(d)];
                 if (!v || currentZoomed) return;
@@ -521,6 +524,63 @@ function drawMapChart(fullWidth, fullHeight, chart) {
                     .style('top', (event.clientY - 36) + 'px');
             })
             .on('mouseleave', () => tip.classed('show', false));
+
+        // top-N countries by verified emissions get a permanent label on the
+        // choropleth (step 1) showing name + emissions/free-allowance figures
+        const TOP_N_COUNTRIES = 5;
+        const topCountryFeatures = worldFeatures
+            .filter(d => COUNTRY_DATA[featureISO2(d)])
+            .sort((a, b) => COUNTRY_DATA[featureISO2(b)].emit - COUNTRY_DATA[featureISO2(a)].emit)
+            .slice(0, TOP_N_COUNTRIES);
+
+        const countryLabelGroup = svg.append('g')
+            .attr('class', 'map-country-labels')
+            .style('pointer-events', 'none'); // never block hover on the country paths beneath
+
+        const countryLabelSel = countryLabelGroup.selectAll('g.map-country-label')
+            .data(topCountryFeatures)
+            .join('g')
+            .attr('class', 'map-country-label')
+            .attr('transform', d => {
+                const [x, y] = pathEurope.centroid(d);
+                return `translate(${x},${y})`;
+            });
+
+        // white halo behind the text (via paint-order) keeps labels legible
+        // over any choropleth color without needing a background rect
+        countryLabelSel.append('text')
+            .attr('class', 'country-label-name')
+            .attr('text-anchor', 'middle')
+            .attr('y', -4)
+            .attr('font-size', fullWidth > 1000 ? 12 : 10)
+            .attr('font-weight', '700')
+            .attr('fill', '#1a1a1a')
+            .text(d => d.properties.NAME || featureISO2(d));
+
+        let countryLabelFigs = countryLabelSel.append('text')
+            .attr('class', 'country-label-figures')
+            .attr('text-anchor', 'middle')
+            .attr('y', fullWidth > 1000 ? 11 : 9)
+            .attr('font-size', fullWidth > 1000 ? 10 : 8)
+            .attr('fill', '#1a1a1a')
+
+        countryLabelFigs.append('tspan')
+            .attr('dx', 0)
+            .attr('dy', 0)
+            .attr('text-anchor', 'middle')
+            .text(d => {
+                const v = COUNTRY_DATA[featureISO2(d)];
+                return `${v.emit.toFixed(1)} Mt emitted`;
+            });
+
+        countryLabelFigs.append('tspan')
+            .attr('dx', 0)
+            .attr('dy', 10)
+            .attr('text-anchor', 'middle')
+            .text(d => {
+                const v = COUNTRY_DATA[featureISO2(d)];
+                return `${v.fa.toFixed(1)} Mt free`;
+            });            
 
         const annotGroup = svg.append('g').attr('class', 'map-annots').attr('opacity', 0);
         const annotData = CITY_DATA.filter(d => ANNOTATED.has(d.city));
@@ -588,6 +648,7 @@ function drawMapChart(fullWidth, fullHeight, chart) {
 
             cityGroup.transition().duration(DUR).attr('opacity', 1);
             annotGroup.transition().duration(DUR).attr('opacity', 1);
+            countryLabelGroup.transition().duration(DUR / 2).attr('opacity', 0);
 
             Object.entries(cityAnnotGroups).forEach(([city, g]) => {
                 g.transition().duration(DUR).style('opacity', citiesToShow.includes(city) ? 1 : 0);
@@ -612,6 +673,7 @@ function drawMapChart(fullWidth, fullHeight, chart) {
 
                 cityGroup.transition().duration(DUR / 2).attr('opacity', 0);
                 annotGroup.transition().duration(DUR / 2).attr('opacity', 0);
+                countryLabelGroup.transition().duration(DUR).attr('opacity', 1);
                 updateLegend(1);
             }
 
@@ -650,7 +712,7 @@ function onMapStep(api, stepNum) {
    onHeadlineStep and onChemicalsStep.
    ============================================================ */
 function drawWaffleChart(fullWidth, fullHeight, chart) {
-    const margin = {top: 10, right: 0, bottom: 5, left: 0},
+    const margin = {top: 10, right: 0, bottom: 5, left: 20},
         outerWidth = (fullWidth > 768 ? fullWidth / 2 : fullWidth) - margin.left - margin.right;
 
     const TOTAL_FA = 79.692;
@@ -790,23 +852,7 @@ function drawWaffleChart(fullWidth, fullHeight, chart) {
         .attr('cy', gridY)
         .attr('r', DOT_R)
         .attr('fill', 'lightgrey')
-        .style('cursor', 'default')
-        .on('mouseover', function(event, d) {
-            if (d.i < 10) {
-                const surplus = (d.fa - d.em).toFixed(3);
-                const surplusLabel = d.ov
-                    ? `<span style="color:#f1948a">+${surplus} Mt surplus</span>`
-                    : `<span style="color:#85c1e9">${surplus} Mt deficit</span>`;
-                const emLabel = d.em > 0 ? d.em.toFixed(3) + ' MtCO₂' : 'not reported';
-                tip.html(`<strong>${d.n}</strong><br>Free allowances: ${d.fa.toFixed(3)} MtCO₂<br>Verified emissions: ${emLabel}<br>${surplusLabel}`)
-                    .classed('show', true);
-            }
-        })
-        .on('mousemove', function(event) {
-            tip.style('left', (event.clientX + 14) + 'px')
-                .style('top', (event.clientY - 40) + 'px');
-        })
-        .on('mouseleave', function() { tip.classed('show', false); });
+        .style('cursor', 'pointer')
 
     const nameLabels = svg.selectAll('.waffle-name-label')
         .data(TOP50_VISIBLE)
@@ -815,8 +861,7 @@ function drawWaffleChart(fullWidth, fullHeight, chart) {
         .attr('x', top50X)
         .attr('y', d => top50Y(d) + radiusScale(d.fa) + 12)
         .attr('text-anchor', 'middle')
-        // .attr('font-size', isMobile ? 7 : 11)
-        .attr('font-weight', '600')
+        .style('font-size', fullWidth > 1000 ? 10 : 8)
         .attr('fill','white')
         .attr('opacity', 0)
         // truncate long names on mobile to prevent overlap with bar labels
@@ -831,11 +876,12 @@ function drawWaffleChart(fullWidth, fullHeight, chart) {
         .attr('text-anchor', 'middle')
         .attr('font-size', d=>radiusScale(d.fa)*0.8)
         .attr('font-weight','bold')
-        .attr('fill', 'white')
+        .style('fill', 'black')
         .attr('opacity', 1)
+        .style('cursor', 'pointer')
         .text(d => `${d3.format(',.0f')(d.fa)}${(d.i == 0?'M':'')}`);
 
-    const api = { dots, nameLabels, faLabels, barSegs, barGroup, top50X, top50Y, gridX, gridY, grp, GRP_COLORS, DOT_R, radiusScale, numTop };
+    const api = { dots, nameLabels, faLabels, barSegs, barGroup, top50X, top50Y, gridX, gridY, grp, GRP_COLORS, DOT_R, radiusScale, numTop, tip };
     onWaffleStep(api, 1); // paint the default view before any step is actually scrolled to
     return api;
 }
@@ -845,7 +891,7 @@ function drawWaffleChart(fullWidth, fullHeight, chart) {
 // step 3: remaining 206 companies highlighted -> the other 20%
 // step 4 (and any step beyond): which individual companies were overallocated
 function onWaffleStep(api, stepNum) {
-    const { dots, nameLabels, faLabels, barSegs, barGroup, top50X, top50Y, gridX, gridY, grp, GRP_COLORS, DOT_R, radiusScale, numTop } = api;
+    const { dots, nameLabels, faLabels, barSegs, barGroup, top50X, top50Y, gridX, gridY, grp, GRP_COLORS, DOT_R, radiusScale, numTop, tip } = api;
     const DUR = 550;
 
     if (stepNum == 1) {
@@ -866,12 +912,42 @@ function onWaffleStep(api, stepNum) {
         faLabels.transition().duration(DUR).attr('opacity', 1);
         barSegs.transition().duration(DUR).attr('opacity', (d, i) => i === 0 ? 1 : 0);
         barGroup.transition().duration(DUR).style('opacity', 1);
+        dots.on('mouseover', function(event, d) {
+            if (d.i < 10) {
+                const surplus = (d.fa - d.em).toFixed(3);
+                const surplusLabel = d.ov
+                    ? `<span style="color:#f1948a">+${surplus} Mt surplus</span>`
+                    : `<span style="color:#85c1e9">${surplus} Mt deficit</span>`;
+                const emLabel = d.em > 0 ? d.em.toFixed(3) + ' MtCO₂' : 'not reported';
+                tip.html(`<strong>${d.n}</strong><br>Free allowances: ${d.fa.toFixed(3)} MtCO₂<br>Verified emissions: ${emLabel}<br>${surplusLabel}`)
+                    .classed('show', true);
+            }
+        })
+        .on('mousemove', function(event) {
+            tip.style('left', (event.clientX + 14) + 'px')
+                .style('top', (event.clientY - 40) + 'px');
+        })
+        .on('mouseleave', function() { tip.classed('show', false); });        
         return;
     }
 
     // steps 2-4 all show the full grid (no enlarged top-recipient bubbles)
     nameLabels.transition().duration(DUR).attr('opacity', 0);
     faLabels.transition().duration(DUR).attr('opacity', 0);
+    dots.on('mouseover', function(event, d) {
+        const surplus = (d.fa - d.em).toFixed(3);
+        const surplusLabel = d.ov
+            ? `<span style="color:#f1948a">+${surplus} Mt surplus</span>`
+            : `<span style="color:#85c1e9">${surplus} Mt deficit</span>`;
+        const emLabel = d.em > 0 ? d.em.toFixed(3) + ' MtCO₂' : 'not reported';
+        tip.html(`<strong>${d.n}</strong><br>Free allowances: ${d.fa.toFixed(3)} MtCO₂<br>Verified emissions: ${emLabel}<br>${surplusLabel}`)
+            .classed('show', true);
+    })
+    .on('mousemove', function(event) {
+        tip.style('left', (event.clientX + 14) + 'px')
+            .style('top', (event.clientY - 40) + 'px');
+    })
+    .on('mouseleave', function() { tip.classed('show', false); });
 
     if (stepNum == 2) {
         dots.transition().duration(DUR)
