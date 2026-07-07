@@ -303,6 +303,51 @@ function drawChemicalsChart(fullWidth, fullHeight, chart) {
         .text('increase')
         .style('opacity', 0);
 
+    // compute grey band midpoint at 2015 for the "closed installations" label
+    const openEm2015 = industry_granular.find(d => d.year === 2015 && d.sector === 'Chemicals' && d.open).em;
+    const closedEm2015 = industry_granular.find(d => d.year === 2015 && d.sector === 'Chemicals' && !d.open).em;
+    const greyMidpoint2015 = openEm2015 + closedEm2015 / 2;
+
+    // step 2: "emissions from currently closed installations"
+    // sits in the grey band (closed-installation stack) at 2015
+    svg.append('text')
+        .attr('class', 'emissions-label label-closed')
+        .attr('x', x(2016)).attr('y', y(greyMidpoint2015))
+        .attr('dx', 5).attr('dy', -4)
+        .style('text-anchor', 'middle')
+        .style('fill', 'black').style('font-weight', 'bold')
+        .style('opacity', 0)
+        .text('emissions from');
+
+    svg.append('text')
+        .attr('class', 'emissions-label label-closed')
+        .attr('x', x(2016)).attr('y', y(greyMidpoint2015))
+        .attr('dx', 5).attr('dy', 10)
+        .style('text-anchor', 'middle')
+        .style('fill', 'black')
+        .style('opacity', 0)
+        .text('closed installations');
+
+    // step 4: "37% of total industrial emissions"
+    // anchored to the top of the chemicals stack at 2024
+    svg.append('text')
+        .attr('class', 'emissions-label label-s4')
+        .attr('x', x(2024)).attr('y', y(chemicals_em_fa.get(2024).em))
+        .attr('dx', -5).attr('dy', -8)
+        .style('text-anchor', 'end')
+        .style('fill', 'black').style('font-weight', 'bold')
+        .style('opacity', 0)
+        .text('37% of total');
+
+    svg.append('text')
+        .attr('class', 'emissions-label label-s4')
+        .attr('x', x(2024)).attr('y', y(chemicals_em_fa.get(2024).em))
+        .attr('dx', -5).attr('dy', 6)
+        .style('text-anchor', 'end')
+        .style('fill', 'black')
+        .style('opacity', 0)
+        .text('industrial emissions');
+
     return { svg, x, y, color_sectors, sectors, chemicals_em_fa, max_chemicals, max_industry };
 }
 
@@ -317,6 +362,8 @@ function onChemicalsStep(api, stepNum) {
         svg.selectAll('.sector').transition().duration(1000).style('fill', d => color_sectors(sectors[d.key]));
         svg.selectAll('.emissions-mark.s-2').transition().duration(1000).style("opacity", 0);
         svg.selectAll('.emissions-label.s-2').transition().duration(1000).style("opacity", 0);
+        svg.selectAll('.label-closed').transition().duration(1000).style("opacity", 0);
+        svg.selectAll('.label-s4').transition().duration(1000).style("opacity", 0);
     }
 
     if (stepNum == 2) {
@@ -347,6 +394,8 @@ function onChemicalsStep(api, stepNum) {
         svg.selectAll('.emissions-mark').transition().duration(1000).style("opacity", 1);
         svg.selectAll('.emissions-label').transition().duration(1000).style("opacity", 1);
         svg.selectAll(".sector").style('opacity', d => sectors[d.key] == 'Chemicals' ? 1 : 0);
+        svg.selectAll('.label-closed').transition().duration(1000).style("opacity", 1);
+        svg.selectAll('.label-s4').transition().duration(1000).style("opacity", 0);
     }
 
     if (stepNum == 3) {
@@ -376,12 +425,22 @@ function onChemicalsStep(api, stepNum) {
         svg.selectAll('.sector-label').transition().duration(1000)
             .attr('y', d => api.y(d.v))
             .style("opacity", 1);
-            
-
 
         svg.selectAll('.emissions-mark').transition().duration(1000).style("opacity", 0);
         svg.selectAll('.emissions-label').transition().duration(1000).style("opacity", 0);
+        svg.selectAll('.label-closed').transition().duration(1000).style("opacity", 0);
+        svg.selectAll('.label-s4').transition().duration(1000).style("opacity", 0);
     }
+
+    if (stepNum == 4) {
+        // update y position to match the current max_industry scale, then reveal
+        svg.selectAll('.label-s4')
+            .transition().duration(800)
+            .attr('y', api.y(api.chemicals_em_fa.get(2024).em))
+            .style("opacity", 1);
+        svg.selectAll('.label-closed').transition().duration(800).style("opacity", 0);
+    }
+
 }
 
 /* ============================================================
